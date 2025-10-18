@@ -150,17 +150,24 @@
     const logoutBtn = document.getElementById("logoutBtn");
 
     // ==========================================================
-    // ✅ كود تثبيت زر الرجوع في الهاتف (Back Button Fix)
+    // ✅ الكود الجديد والمحسن لحل مشكلة زر الرجوع (Back Button Fix)
     // ==========================================================
-    // نضع حالة وهمية عند تحميل الصفحة.
-    // هذا يضمن أن أول ضغطة على زر الرجوع لن تخرج من الصفحة.
-    window.history.pushState(null, null, location.href);
+    
+    // عند تحميل الصفحة، نضيف حالتين في سجل المتصفح (pushState)
+    // نستخدم setTimeout لضمان أن المتصفح قد قام بتسجيل تحميل الصفحة الحالية أولاً
+    setTimeout(function () {
+        // نضع حالتين في السجل
+        history.pushState(null, null, document.URL);
+        history.pushState(null, null, document.URL); 
+    }, 1000); // تأخير بسيط لضمان التنفيذ
 
     // عند النقر على زر الرجوع (popstate):
-    window.addEventListener("popstate", (e) => {
-      // بدلاً من العودة للخلف أو الخروج، نقوم بإعادة تحميل الصفحة الحالية
-      window.location.reload(); 
+    window.addEventListener('popstate', function () {
+        // بدلاً من العودة للخلف (الخروج)، نقوم بإعادة تحميل الصفحة الحالية
+        // نستخدم window.location.replace(document.URL) أو window.location.reload()
+        window.location.replace(document.URL);
     });
+
     // ==========================================================
     
     // ✅ إظهار الفقاعة عند بداية الصفحة
