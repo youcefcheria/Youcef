@@ -150,21 +150,21 @@
     const logoutBtn = document.getElementById("logoutBtn");
 
     // ==========================================================
-    // ✅ الكود الجديد والمحسن لحل مشكلة زر الرجوع (Back Button Fix)
+    // ✅ الكود الأكثر فعالية لحل مشكلة زر الرجوع (Google Chrome Mobile)
     // ==========================================================
     
-    // عند تحميل الصفحة، نضيف حالتين في سجل المتصفح (pushState)
-    // نستخدم setTimeout لضمان أن المتصفح قد قام بتسجيل تحميل الصفحة الحالية أولاً
-    setTimeout(function () {
-        // نضع حالتين في السجل
-        history.pushState(null, null, document.URL);
-        history.pushState(null, null, document.URL); 
-    }, 1000); // تأخير بسيط لضمان التنفيذ
+    // عند تحميل الصفحة، نضع حالتين في السجل لضمان وجود مكان للعودة إليه
+    window.onload = function() {
+        // نستخدم setTimeout لضمان أن الكود يتأخر قليلاً حتى يتعرف المتصفح على تحميل الصفحة الأساسية
+        setTimeout(function() {
+            history.pushState(null, null, location.href);
+        }, 100);
+    };
 
     // عند النقر على زر الرجوع (popstate):
-    window.addEventListener('popstate', function () {
+    window.addEventListener('popstate', function (event) {
         // بدلاً من العودة للخلف (الخروج)، نقوم بإعادة تحميل الصفحة الحالية
-        // نستخدم window.location.replace(document.URL) أو window.location.reload()
+        // window.location.replace() أقوى من reload() في بعض السيناريوهات.
         window.location.replace(document.URL);
     });
 
