@@ -147,27 +147,31 @@
     const toast = document.getElementById("toast");
 
     // ==========================================================
-    // ✅ الحل الأخير والبديل لزر الرجوع: الإعادة القسرية لصفحة وسيطة
+    // ✅ الحل النهائي لزر الرجوع: الإعادة القسرية (History Fix)
     // ==========================================================
     
-    // عند تحميل الصفحة، نضع حالة وهمية لضمان وجود خطوة رجوع أولى
-    window.onload = function() {
-        history.pushState(null, null, location.href); 
-    };
-
-    // نُضيف إجباراً لتعديل السجل بعد 10 مللي ثانية للتأكد من وجود خطوتين على الأقل.
-    // هذا هو الجزء الحاسم الذي يُجبر المتصفح على عدم الخروج عند الضغطة الأولى.
-    setTimeout(() => {
-        if (history.length <= 1) {
-             history.pushState(null, null, location.href);
+    // الحل الأقوى: نستخدم replace() و sessionStorage لضمان عدم الخروج
+    if (window.history && window.history.pushState) {
+        
+        // 1. عند تحميل الصفحة، نضع علامة في sessionStorage 
+        if (!sessionStorage.getItem('visited')) {
+            sessionStorage.setItem('visited', 'true');
+            // إذا كان السجل قصيراً جداً، نقوم بإعادة توجيه قسرية لنفس الصفحة (لإضافة سجل)
+            if (history.length <= 1) {
+                window.location.replace(document.URL + '#reloaded');
+                return; // إيقاف تنفيذ الكود بعد إعادة التوجيه
+            }
         }
-    }, 10);
-
-    // عند النقر على زر الرجوع (popstate):
-    window.addEventListener('popstate', function (event) {
-        // نُجبر المتصفح على تحميل الصفحة الحالية مجدداً باستخدام replace().
-        window.location.replace(document.URL);
-    });
+        
+        // 2. عند الضغط على زر الرجوع
+        window.addEventListener('popstate', function (event) {
+            // نُجبر المتصفح على تحميل الصفحة الحالية مجدداً
+            window.location.replace(document.URL);
+        });
+        
+        // 3. نضيف حالة وهمية إضافية لزيادة طول السجل
+        history.pushState(null, null, location.href); 
+    }
     
     // ==========================================================
     
