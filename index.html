@@ -147,14 +147,15 @@
     const toast = document.getElementById("toast");
 
     // ==========================================================
-    // ✅ الحل لزر الرجوع (الإعادة القسرية لتحميل الصفحة)
+    // ✅ الحل الأقوى لزر الرجوع: إضافة حالتين وإعادة التوجيه القسري
     // ==========================================================
     
-    // عند تحميل الصفحة، نضع إدخالاً وهمياً إضافياً في السجل
-    window.onload = function() {
-        // نضع حالة وهمية في سجل المتصفح
+    // عند تحميل الصفحة، نضع حالتين وهميتين في السجل.
+    // هذا يجعل المتصفح يعتقد أن هناك صفحة سابقة للعودة إليها.
+    if (window.history && window.history.pushState) {
         history.pushState(null, null, location.href);
-    };
+        history.pushState(null, null, location.href); 
+    }
 
     // عند النقر على زر الرجوع (popstate):
     window.addEventListener('popstate', function (event) {
